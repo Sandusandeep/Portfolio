@@ -1,6 +1,6 @@
 import "./App.css";
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Routes,
   Route,
   Link,
@@ -32,17 +32,44 @@ const formImages = importAll(
 
 function ScrollToSkillsLink() {
   const navigate = useNavigate();
-  const handleClick = (e) => {
+  function handleClick(e) {
     e.preventDefault();
-    navigate("/");
-    setTimeout(() => {
+    if (window.location.hash !== "#/") {
+      navigate("/");
+      setTimeout(() => {
+        const el = document.getElementById("skills");
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    } else {
       const el = document.getElementById("skills");
       if (el) el.scrollIntoView({ behavior: "smooth" });
-    }, 100);
-  };
+    }
+  }
   return (
     <a href="#skills" onClick={handleClick}>
       Skills
+    </a>
+  );
+}
+
+function ContactNavLink() {
+  const navigate = useNavigate();
+  function handleContactClick(e) {
+    e.preventDefault();
+    if (window.location.hash !== "#/") {
+      navigate("/");
+      setTimeout(() => {
+        const el = document.getElementById("contact");
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    } else {
+      const el = document.getElementById("contact");
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+  return (
+    <a href="#contact" onClick={handleContactClick}>
+      Contact
     </a>
   );
 }
@@ -62,15 +89,16 @@ function App() {
             <Link to="/">About</Link>
             <ScrollToSkillsLink />
             <Link to="/projects">Projects</Link>
-            <a href="#contact">Contact</a>
+            <ContactNavLink />
           </nav>
         </header>
         <Routes>
+          {/* Catch-all route for any path, including /Portfolio */}
           <Route
-            path="/"
+            path="*"
             element={
               <>
-                {/* Hero Section */}
+                {/* About Section */}
                 <section className="hero-section">
                   <div className="hero-text">
                     <h2>Hello, I'm</h2>
@@ -78,12 +106,7 @@ function App() {
                     <h3>Frontend Developer/ Fullstack developer</h3>
                     <p>React JS | Advanced JavaScript | Redux</p>
                   </div>
-                  {/* <div className="hero-image">
-                    {/* Replace with your image */}
-
-                  {/* </section></div> */}
                 </section>
-
                 {/* Professional Summary & Skills */}
                 <section id="skills" className="skills-section">
                   <h2>Professional Summary</h2>
@@ -119,6 +142,27 @@ function App() {
                     </li>
                   </ul>
                 </section>
+                {/* Contact Section */}
+                <section id="contact" className="contact-section">
+                  <h2>Contact</h2>
+                  <p>
+                    Email:{" "}
+                    <a href="mailto:sandycdeep@gmail.com">
+                      sandycdeep@gmail.com
+                    </a>
+                  </p>
+                  <p>
+                    LinkedIn:{" "}
+                    <a
+                      href="https://linkedin.com/in/sandeep-c-ba1157160/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      sandeep-c-ba1157160
+                    </a>
+                  </p>
+                  <p>Mobile: +91 7305463983</p>
+                </section>
               </>
             }
           />
@@ -151,24 +195,14 @@ function App() {
               <ProjectPage
                 title="Advanced Todo List Application"
                 images={todoImages}
-                description="A feature-rich todo list app with advanced filtering, reminders, and productivity analytics."
+                description="A feature-rich todo list app with advanced filtering, editing, and persistence."
                 details={
-                  <>
-                    <ul>
-                      <li>Multiple lists, priorities, and deadlines</li>
-                      <li>Smart reminders and notifications</li>
-                      <li>Productivity analytics dashboard</li>
-                      <li>Responsive and accessible UI</li>
-                    </ul>
-                    <h3>Git repository link:</h3>
-                    <a
-                      href="https://github.com/Sandusandeep/todolist-mern"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      https://github.com/Sandusandeep/todolist-mern
-                    </a>
-                  </>
+                  <ul>
+                    <li>Task creation, editing, deletion</li>
+                    <li>Filtering and search</li>
+                    <li>Persistent storage</li>
+                    <li>Responsive design</li>
+                  </ul>
                 }
               />
             }
@@ -179,21 +213,14 @@ function App() {
               <ProjectPage
                 title="Submission Form"
                 images={formImages}
-                description="Modern, validated form for user submissions, with real-time feedback and API integration."
+                description="A modern form submission app with validation and API integration."
                 details={
-                  <>
-                    <ul>
-                      <li>Field validation and error handling</li>
-                      <li>API integration for data submission</li>
-                      <li>Real-time feedback and progress</li>
-                      <li>Clean, modern design</li>
-                    </ul>
-
-                    <h3>Git repository link:</h3>
-                    <a href="https://github.com/Sandusandeep/e-form">
-                      https://github.com/Sandusandeep/e-form
-                    </a>
-                  </>
+                  <ul>
+                    <li>Field validation and error handling</li>
+                    <li>API integration for data submission</li>
+                    <li>Real-time feedback and progress</li>
+                    <li>Clean, modern design</li>
+                  </ul>
                 }
               />
             }
@@ -206,43 +233,17 @@ function App() {
                 images={ecommerceImages}
                 description="Full-featured e-commerce platform with product catalog, cart, and secure checkout."
                 details={
-                  <>
-                    <ul>
-                      <li>Product catalog with search and filters</li>
-                      <li>Shopping cart and checkout flow</li>
-                      <li>User authentication and order history</li>
-                      <li>Admin dashboard for product management</li>
-                    </ul>
-
-                    <h3>Git repository link:</h3>
-                    <a href="https://github.com/Sandusandeep/e-commerce-MegaMart">
-                      https://github.com/Sandusandeep/e-commerce-MegaMart
-                    </a>
-                  </>
+                  <ul>
+                    <li>Product catalog with search and filters</li>
+                    <li>Shopping cart and checkout flow</li>
+                    <li>User authentication and order history</li>
+                    <li>Admin dashboard for product management</li>
+                  </ul>
                 }
               />
             }
           />
         </Routes>
-        {/* Contact Section (always visible at bottom) */}
-        <section id="contact" className="contact-section">
-          <h2>Contact</h2>
-          <p>
-            Email:{" "}
-            <a href="mailto:sandycdeep@gmail.com">sandycdeep@gmail.com</a>
-          </p>
-          <p>
-            LinkedIn:{" "}
-            <a
-              href="https://linkedin.com/in/sandeep-c-ba1157160/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              sandeep-c-ba1157160
-            </a>
-          </p>
-          <p>Mobile: +91 7305463983</p>
-        </section>
       </div>
     </Router>
   );
